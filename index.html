@@ -83,27 +83,6 @@
          <p>Cargando...</p>
       </div>
 
-      <!-- SPOTIFY PLAYER FLOTANTE -->
-      <div class="music-player" id="music-player">
-         <div class="music-player__toggle" id="player-toggle">
-            <i class="ri-music-fill"></i>
-         </div>
-         <div class="music-player__header">
-            <h3 class="music-player__title">
-               <i class="bx bxl-spotify"></i> Lisa - ALTER EGO
-            </h3>
-            <i class="ri-close-line" id="close-player"></i>
-         </div>
-         <div class="music-player__content">
-            <!-- EMBED DE SPOTIFY (LALISA album) con mejor rendimiento -->
-            <iframe id="spotify-player" style="border-radius:12px"
-               src="https://open.spotify.com/embed/album/5eoWRkeplmcCL97afSMJVm?utm_source=generator&theme=0"
-               width="100%" height="152" frameBorder="0" allowfullscreen
-               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share"
-               loading="eager"></iframe>
-         </div>
-      </div>
-
       <!-- HOME SECTION -->
       <section class="home section" id="home">
          <img src="assets/img/Diseño sin título (1).gif" alt="home image" class="home__bg">
@@ -271,31 +250,199 @@
          </div>
       </section>
 
-      <!-- CONTACTO SECTION -->
+      <!-- CONTACTO SECTION - Versión mejorada -->
       <section class="join section" id="contacto">
          <h2 class="section__title container">Contacto</h2>
-         <div class="join__container container grid">
-            <div class="join__data">
-               <p class="join__description">
-                  Si te gustaría que trabaje para ti o quieres conocer más sobre mis proyectos, puedes enviarme tu
-                  correo electrónico
-                  y me pondré en contacto contigo lo antes posible. 📩✨<br><br>
+         <div class="contact__container container">
+            <!-- Carta de contacto -->
+            <div class="contact__card">
+               <!-- Lado izquierdo: Formulario -->
+               <div class="contact__form-side">
+                  <div class="contact__header">
+                     <h3 class="contact__title">Envíame un mensaje</h3>
+                     <p class="contact__subtitle">
+                        Completando este formulario te pondrás en contacto conmigo para proyectos, colaboraciones o
+                        cualquier consulta.
+                     </p>
+                  </div>
 
-                  Estoy abierto a colaboraciones, proyectos creativos y nuevas ideas. ¡Estaré encantado de hablar
-                  contigo! 🚀😊
-               </p>
+                  <form id="contactForm" class="contact__form">
+                     <div class="contact__form-row">
+                        <div class="contact__form-group">
+                           <label for="contactName" class="contact__label">Nombre completo</label>
+                           <div class="contact__input-wrapper">
+                              <i class="ri-user-line contact__input-icon"></i>
+                              <input type="text" id="contactName" placeholder="Tu nombre completo"
+                                 class="contact__input" required>
+                              <div class="contact__error-message" id="nameError"></div>
+                           </div>
+                        </div>
 
-               <form id="contactForm" class="join__form">
-                  <input type="email" placeholder="Tu correo electrónico" class="join__input" required>
-                  <button type="submit" class="join__button button">
-                     Enviar <i class="ri-arrow-right-line"></i>
-                  </button>
-               </form>
+                        <div class="contact__form-group">
+                           <label for="contactEmail" class="contact__label">Correo electrónico</label>
+                           <div class="contact__input-wrapper">
+                              <i class="ri-mail-line contact__input-icon"></i>
+                              <input type="email" id="contactEmail" placeholder="correo@ejemplo.com"
+                                 class="contact__input" required>
+                              <div class="contact__error-message" id="emailError"></div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="contact__form-group">
+                        <label for="contactSubject" class="contact__label">Asunto</label>
+                        <div class="contact__input-wrapper">
+                           <i class="ri-chat-1-line contact__input-icon"></i>
+                           <input type="text" id="contactSubject" placeholder="Asunto del mensaje"
+                              class="contact__input" required>
+                           <div class="contact__error-message" id="subjectError"></div>
+                        </div>
+                     </div>
+
+                     <div class="contact__form-row">
+                        <div class="contact__form-group">
+                           <label for="contactBirthdate" class="contact__label">Fecha de nacimiento</label>
+                           <div class="contact__input-wrapper">
+                              <i class="ri-calendar-line contact__input-icon"></i>
+                              <input type="date" id="contactBirthdate" class="contact__input" required>
+                              <div class="contact__error-message" id="birthdateError"></div>
+                           </div>
+                        </div>
+
+                        <div class="contact__form-group">
+                           <label for="contactWork" class="contact__label">Tipo de trabajo</label>
+                           <div class="contact__input-wrapper">
+                              <i class="ri-briefcase-line contact__input-icon"></i>
+                              <select id="contactWork" class="contact__input" required>
+                                 <option value="" disabled selected>Selecciona una opción</option>
+                                 <option value="desarrollo-web">Desarrollo Web</option>
+                                 <option value="diseno-grafico">Diseño Gráfico</option>
+                                 <option value="marketing-digital">Marketing Digital</option>
+                                 <option value="redes-sociales">Gestión de Redes Sociales</option>
+                                 <option value="otro">Otro (especificar)</option>
+                              </select>
+                              <div class="contact__error-message" id="workError"></div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="contact__form-group">
+                        <label class="contact__label">Fecha y hora actual</label>
+                        <div class="contact__datetime">
+                           <i class="ri-time-line contact__datetime-icon"></i>
+                           <span id="currentDateTime"></span>
+                        </div>
+                     </div>
+
+                     <div class="contact__form-group">
+                        <label for="contactDescription" class="contact__label">Descripción del proyecto</label>
+                        <div class="contact__input-wrapper textarea-wrapper">
+                           <i class="ri-file-text-line contact__input-icon"></i>
+                           <textarea id="contactDescription"
+                              placeholder="Describe aquí los detalles de tu proyecto o consulta..."
+                              class="contact__textarea" rows="4" required></textarea>
+                           <div class="contact__error-message" id="descriptionError"></div>
+                        </div>
+                     </div>
+
+                     <div class="contact__form-privacy">
+                        <input type="checkbox" id="privacyPolicy" required>
+                        <label for="privacyPolicy">Acepto la política de privacidad y el tratamiento de mis
+                           datos</label>
+                        <div class="contact__error-message" id="privacyError"></div>
+                     </div>
+
+                     <button type="submit" class="contact__button button">
+                        Enviar mensaje <i class="ri-send-plane-fill"></i>
+                     </button>
+                  </form>
+               </div>
+
+               <!-- Lado derecho: Imagen y detalles -->
+               <div class="contact__image-side">
+                  <div class="contact__image-container">
+                     <img src="assets/img/Lisa_Ident_5Points_gif_transparent_800x.webp" alt="Imagen de contacto"
+                        class="contact__image">
+                     <div class="contact__image-shadow"></div>
+                  </div>
+                  <div class="contact__details">
+                     <h4 class="contact__details-title">Información de contacto</h4>
+                     <ul class="contact__details-list">
+                        <li class="contact__details-item">
+                           <i class="ri-map-pin-line"></i>
+                           <span>Lima - Perú</span>
+                        </li>
+                        <li class="contact__details-item">
+                           <i class="ri-mail-line"></i>
+                           <span>fabian1234andre@gmail.com</span>
+                        </li>
+                        <li class="contact__details-item">
+                           <i class="ri-whatsapp-line"></i>
+                           <span>+51 916 053 628</span>
+                        </li>
+                     </ul>
+                     <!-- <div class="contact__social">
+                        <a href="https://www.instagram.com/andre_.sm/?hl=es-la" target="_blank"
+                           class="contact__social-link">
+                           <i class="ri-instagram-line"></i>
+                        </a>
+                        <a href="https://wa.me/51916053628" target="_blank" class="contact__social-link">
+                           <i class="ri-whatsapp-line"></i>
+                        </a>
+                        <a href="https://x.com/PanPan1589" target="_blank" class="contact__social-link">
+                           <i class="ri-twitter-line"></i>
+                        </a>
+                        <a href="https://www.facebook.com/andre.sm1589" target="_blank" class="contact__social-link">
+                           <i class="ri-facebook-fill"></i>
+                        </a>
+                     </div> -->
+                  </div>
+               </div>
             </div>
 
-            <div class="join__image">
-               <img src="assets/img/Lisa_Ident_5Points_gif_transparent_800x.webp" alt="join image" class="join__img">
-               <div class="join__shadow"></div>
+            <!-- Notificaciones mejoradas -->
+            <div class="notification" id="notification">
+               <div class="notification__icon">
+                  <i class="ri-information-line"></i>
+               </div>
+               <div class="notification__content">
+                  <p id="notificationMessage">Mensaje de notificación</p>
+               </div>
+               <button class="notification__close" id="notificationClose">
+                  <i class="ri-close-line"></i>
+               </button>
+            </div>
+         </div>
+
+         <!-- Modal de confirmación mejorado -->
+         <div class="modal" id="emailModal">
+            <div class="modal__content">
+               <!-- Estado de carga -->
+               <div class="modal__loading" id="modalLoading">
+                  <div class="modal__loading-spinner"></div>
+                  <h3>Enviando mensaje</h3>
+                  <p>Por favor espera mientras procesamos tu solicitud...</p>
+               </div>
+
+               <!-- Estado de éxito -->
+               <div class="modal__success" id="modalSuccess">
+                  <div class="modal__success-icon">
+                     <i class="ri-check-line"></i>
+                  </div>
+                  <h3>¡Mensaje enviado con éxito!</h3>
+                  <p>Gracias por contactarme. Te responderé lo más pronto posible.</p>
+                  <button class="modal__button button" id="modalClose">Aceptar</button>
+               </div>
+
+               <!-- Estado de error -->
+               <div class="modal__error" id="modalError">
+                  <div class="modal__error-icon">
+                     <i class="ri-error-warning-line"></i>
+                  </div>
+                  <h3>Error al enviar mensaje</h3>
+                  <p>Ha ocurrido un problema al procesar tu solicitud. Por favor intenta nuevamente.</p>
+                  <button class="modal__button button" id="modalErrorClose">Intentar de nuevo</button>
+               </div>
             </div>
          </div>
       </section>

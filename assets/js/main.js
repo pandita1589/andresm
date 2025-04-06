@@ -1,90 +1,381 @@
 /*=============== EMAIL FORM & MODAL WITH REAL EMAIL SENDING ===============*/
 document.addEventListener('DOMContentLoaded', function() {
+    // Elementos del formulario y modal
     const contactForm = document.getElementById('contactForm');
-    const modal = document.querySelector('.modal');
+    const modal = document.getElementById('emailModal');
     const modalLoading = document.getElementById('modalLoading');
     const modalSuccess = document.getElementById('modalSuccess');
     const modalError = document.getElementById('modalError');
     const modalClose = document.getElementById('modalClose');
     const modalErrorClose = document.getElementById('modalErrorClose');
+    const dateTimeDisplay = document.getElementById('currentDateTime');
+    const notificationElement = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notificationMessage');
+    const notificationClose = document.getElementById('notificationClose');
     
-    // Función para enviar correo usando EmailJS
-    const sendEmail = (email) => {
-        // Estas credenciales deberán ser reemplazadas con tus credenciales reales de EmailJS
-        const serviceID = 'service_zgrkhrf'; // Reemplazar con tu service ID
-        const templateID = 'template_p8v5pdc'; // Reemplazar con tu template ID
-        const userID = 'gIYxgJqJn4Z6ufOad'; // Reemplazar con tu user ID
-        
-        const templateParams = {
-            to_email: 'fabian1234andre@gmail.com',
-            from_email: email,
-            subject: 'Nueva persona te quiere contratar',
-            message: `El usuario con correo ${email} está interesado en tus servicios.`,
-            contact_number: Math.random() * 100000 | 0
-        };
-        
-        return emailjs.send(serviceID, templateID, templateParams, userID);
+    // Mapeo de campos a mensajes de error
+    const errorFields = {
+        'contactName': 'nameError',
+        'contactEmail': 'emailError',
+        'contactSubject': 'subjectError',
+        'contactBirthdate': 'birthdateError',
+        'contactWork': 'workError',
+        'contactDescription': 'descriptionError',
+        'privacyPolicy': 'privacyError'
     };
     
+    // Inicializar campos de fecha
+    initializeDateFields();
+    
+    // Actualizar la fecha y hora actual
+    updateDateTime();
+    
+    // Agregar validación en tiempo real para los campos
+    setupFieldValidation();
+    
+    // Manejar el envío del formulario
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Obtener el correo electrónico
-            const emailInput = contactForm.querySelector('input[type="email"]');
-            const email = emailInput.value;
-            
-            // Abrir modal con pantalla de carga
-            modal.classList.add('active');
-            modalLoading.classList.add('active');
-            modalSuccess.classList.remove('active');
-            modalError.classList.remove('active');
-            
-            // Enviar correo electrónico real
-            sendEmail(email)
-                .then(response => {
-                    console.log('Email enviado correctamente!', response);
-                    modalLoading.classList.remove('active');
-                    modalSuccess.classList.add('active');
-                    
-                    // Incrementar contador de contactos
-                    const currentCount = parseInt(localStorage.getItem('contactCount') || 0);
-                    localStorage.setItem('contactCount', currentCount + 1);
-                    
-                    // Limpiar formulario
-                    contactForm.reset();
-                })
-                .catch(error => {
-                    console.error('Error al enviar email:', error);
-                    modalLoading.classList.remove('active');
-                    modalError.classList.add('active');
-                });
+        contactForm.addEventListener('submit', handleFormSubmit);
+    }
+    
+    // Cerrar notificaciones
+    if (notificationClose) {
+        notificationClose.addEventListener('click', () => {
+            hideNotification();
         });
     }
     
-    // Cerrar modal en éxito
+    // Cerrar modales
     if (modalClose) {
-        modalClose.addEventListener('click', function() {
-            modal.classList.remove('active');
-        });
+        modalClose.addEventListener('click', closeModal);
     }
     
-    // Cerrar modal en error
     if (modalErrorClose) {
-        modalErrorClose.addEventListener('click', function() {
-            modal.classList.remove('active');
-        });
+        modalErrorClose.addEventListener('click', closeModal);
     }
     
-    // También cerrar modal al hacer clic fuera
-    if (modal) {
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-        });
+    /**
+     * Inicializa los campos de fecha con valores por defecto
+     */
+    function initializeDateFields() {
+        const birthdateInput = document.getElementById('contactBirthdate');
+        if (birthdateInput) {
+            // Establecer fecha máxima (hoy) para el campo de fecha de nacimiento
+            const today = new Date().toISOString().split('T')[0];
+            birthdateInput.setAttribute('max', today);
+            
+            // Establecer fecha por defecto (18 años atrás)
+            const defaultDate = new Date();
+            defaultDate.setFullYear(defaultDate.getFullYear() - 18);
+            birthdateInput.value = defaultDate.toISOString().split('T')[0];
+        }
     }
-});/*=============== SMOOTH SCROLL ANIMATION ===============*/
+    
+    /**
+     * Actualiza la fecha y hora actual en el elemento correspondiente
+     */
+    function updateDateTime() {
+        if (dateTimeDisplay) {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            
+            dateTimeDisplay.textContent = now.toLocaleDateString('es-ES', options);
+            
+            // Actualizar cada segundo
+            setTimeout(updateDateTime, 1000);
+        }
+    }
+    
+    /**
+     * Configura la validación en tiempo real para los campos del formulario
+     */
+    function setupFieldValidation() {
+        // Agregar validación en tiempo real para todos los campos
+        for (const fieldId in errorFields) {
+            const field = document.getElementById(fieldId);
+            const errorId = errorFields[fieldId];
+            
+            if (field && errorId) {
+                // Validar al perder el foco
+                field.addEventListener('blur', function() {
+                    validateField(this);
+                });
+                
+                // Para checkbox, validar al cambiar
+                if (field.type === 'checkbox') {
+                    field.addEventListener('change', function() {
+                        validateField(this);
+                    });
+                }
+                
+                // Para otros campos, limpiar error al empezar a escribir
+                if (field.type !== 'checkbox') {
+                    field.addEventListener('input', function() {
+                        const errorElement = document.getElementById(errorId);
+                        if (errorElement) {
+                            errorElement.textContent = '';
+                            errorElement.classList.remove('show');
+                        }
+                        this.classList.remove('error-input');
+                    });
+                }
+            }
+        }
+    }
+    
+    /**
+     * Valida un campo específico del formulario
+     * @param {HTMLElement} field - El campo a validar
+     * @returns {boolean} - Verdadero si el campo es válido, falso en caso contrario
+     */
+    function validateField(field) {
+        const errorId = errorFields[field.id];
+        const errorElement = document.getElementById(errorId);
+        let isValid = true;
+        let errorMessage = '';
+        
+        // Si no hay elemento de error, no podemos mostrar mensajes
+        if (!errorElement) return true;
+        
+        // Validar según el tipo de campo
+        if (field.hasAttribute('required') && !field.value && field.type !== 'checkbox') {
+            isValid = false;
+            errorMessage = 'Este campo es obligatorio';
+        } else if (field.type === 'checkbox' && field.hasAttribute('required') && !field.checked) {
+            isValid = false;
+            errorMessage = 'Debes aceptar para continuar';
+        } else if (field.type === 'email' && field.value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(field.value)) {
+                isValid = false;
+                errorMessage = 'Ingresa un correo electrónico válido';
+            }
+        } else if (field.id === 'contactName' && field.value && field.value.length < 3) {
+            isValid = false;
+            errorMessage = 'El nombre debe tener al menos 3 caracteres';
+        } else if (field.id === 'contactDescription' && field.value && field.value.length < 10) {
+            isValid = false;
+            errorMessage = 'La descripción debe tener al menos 10 caracteres';
+        }
+        
+        // Mostrar u ocultar mensaje de error
+        if (!isValid) {
+            field.classList.add('error-input');
+            errorElement.textContent = errorMessage;
+            errorElement.classList.add('show');
+        } else {
+            field.classList.remove('error-input');
+            errorElement.textContent = '';
+            errorElement.classList.remove('show');
+        }
+        
+        return isValid;
+    }
+    
+    /**
+     * Valida todos los campos del formulario
+     * @returns {boolean} - Verdadero si todos los campos son válidos
+     */
+    function validateAllFields() {
+        let isValid = true;
+        
+        // Validar cada campo del formulario
+        for (const fieldId in errorFields) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                // Si alguno no es válido, marcar como inválido el formulario
+                if (!validateField(field)) {
+                    isValid = false;
+                    
+                    // Añadir animación de shake
+                    field.classList.add('shake');
+                    setTimeout(() => {
+                        field.classList.remove('shake');
+                    }, 500);
+                }
+            }
+        }
+        
+        return isValid;
+    }
+    
+    /**
+     * Maneja el envío del formulario
+     * @param {Event} e - El evento de envío
+     */
+    function handleFormSubmit(e) {
+        e.preventDefault();
+        
+        // Validar todos los campos
+        if (!validateAllFields()) {
+            showNotification('Por favor, completa correctamente todos los campos obligatorios', 'error');
+            return;
+        }
+        
+        // Recopilar datos del formulario
+        const formData = {
+            name: document.getElementById('contactName').value,
+            email: document.getElementById('contactEmail').value,
+            subject: document.getElementById('contactSubject').value,
+            birthdate: document.getElementById('contactBirthdate').value,
+            workType: document.getElementById('contactWork').value,
+            description: document.getElementById('contactDescription').value,
+            timestamp: new Date().toISOString(),
+            privacy_accepted: document.getElementById('privacyPolicy').checked
+        };
+        
+        // Mostrar modal de carga
+        showModal();
+        modalLoading.style.display = 'block';
+        modalSuccess.style.display = 'none';
+        modalError.style.display = 'none';
+        
+        // Enviar email usando EmailJS
+        sendEmail(formData);
+    }
+    
+    /**
+     * Muestra u oculta el modal
+     * @param {boolean} show - Indica si mostrar u ocultar el modal
+     */
+    function showModal(show = true) {
+        if (modal) {
+            if (show) {
+                modal.style.display = 'flex';
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
+                
+                // Agregar clase al body para evitar scroll
+                document.body.classList.add('modal-open');
+            } else {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+                
+                // Remover clase al body para permitir scroll
+                document.body.classList.remove('modal-open');
+            }
+        }
+    }
+    
+    /**
+     * Cierra el modal
+     */
+    function closeModal() {
+        showModal(false);
+    }
+    
+    /**
+     * Muestra una notificación
+     * @param {string} message - El mensaje a mostrar
+     * @param {string} type - El tipo de notificación (success, error, info, warning)
+     */
+    function showNotification(message, type = 'info') {
+        if (notificationElement && notificationMessage) {
+            // Establecer el icono según el tipo de notificación
+            const iconElement = notificationElement.querySelector('.notification__icon i');
+            if (iconElement) {
+                const iconClass = {
+                    'success': 'ri-check-line',
+                    'error': 'ri-error-warning-line',
+                    'info': 'ri-information-line',
+                    'warning': 'ri-alert-line'
+                }[type] || 'ri-information-line';
+                
+                // Actualizar clase del icono
+                iconElement.className = '';
+                iconElement.classList.add(iconClass);
+            }
+            
+            // Establecer mensaje y tipo
+            notificationMessage.textContent = message;
+            notificationElement.className = `notification ${type}`;
+            
+            // Mostrar notificación
+            notificationElement.classList.add('active');
+            
+            // Ocultar después de 5 segundos
+            clearTimeout(notificationTimeout);
+            notificationTimeout = setTimeout(hideNotification, 5000);
+        }
+    }
+    
+    // Variable para almacenar el temporizador de notificación
+    let notificationTimeout;
+    
+    /**
+     * Oculta la notificación
+     */
+    function hideNotification() {
+        if (notificationElement) {
+            notificationElement.classList.remove('active');
+        }
+    }
+    
+    /**
+     * Envía un email usando EmailJS
+     * @param {Object} formData - Los datos del formulario
+     */
+    function sendEmail(formData) {
+        // Credentials for EmailJS
+        const serviceID = 'service_zgrkhrf';
+        const templateID = 'template_p8v5pdc';
+        const userID = 'gIYxgJqJn4Z6ufOad';
+        
+        // Prepare template parameters
+        const templateParams = {
+            to_email: 'fabian1234andre@gmail.com',
+            from_email: formData.email,
+            from_name: formData.name,
+            subject: formData.subject,
+            birthdate: formData.birthdate,
+            work_type: formData.workType,
+            message: formData.description,
+            timestamp: new Date().toLocaleString('es-ES'),
+            current_year: new Date().getFullYear()
+        };
+        
+        // Send email
+        emailjs.send(serviceID, templateID, templateParams, userID)
+            .then(function(response) {
+                console.log('Email enviado correctamente:', response);
+                
+                // Mostrar mensaje de éxito
+                modalLoading.style.display = 'none';
+                modalSuccess.style.display = 'block';
+                
+                // Limpiar formulario
+                contactForm.reset();
+                
+                // Reinicializar campos de fecha
+                initializeDateFields();
+                
+                // Mostrar notificación como respaldo
+                showNotification('¡Mensaje enviado con éxito! Pronto me pondré en contacto contigo.', 'success');
+            })
+            .catch(function(error) {
+                console.error('Error al enviar email:', error);
+                
+                // Mostrar mensaje de error
+                modalLoading.style.display = 'none';
+                modalError.style.display = 'block';
+                
+                // Mostrar notificación como respaldo
+                showNotification('Error al enviar el mensaje. Por favor, intenta de nuevo más tarde.', 'error');
+            });
+    }
+});
+/*=============== SMOOTH SCROLL ANIMATION ===============*/
 // Función para scroll suave al hacer clic en enlaces de navegación
 document.addEventListener('DOMContentLoaded', function() {
     // Seleccionar todos los enlaces que apuntan a un ID
