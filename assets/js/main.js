@@ -1,5 +1,5 @@
 /*=============== EMAIL FORM & MODAL WITH REAL EMAIL SENDING ===============*/
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Elementos del formulario y modal
     const contactForm = document.getElementById('contactForm');
     const modal = document.getElementById('emailModal');
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const notificationElement = document.getElementById('notification');
     const notificationMessage = document.getElementById('notificationMessage');
     const notificationClose = document.getElementById('notificationClose');
-    
+
     // Mapeo de campos a mensajes de error
     const errorFields = {
         'contactName': 'nameError',
@@ -23,37 +23,37 @@ document.addEventListener('DOMContentLoaded', function() {
         'contactDescription': 'descriptionError',
         'privacyPolicy': 'privacyError'
     };
-    
+
     // Inicializar campos de fecha
     initializeDateFields();
-    
+
     // Actualizar la fecha y hora actual
     updateDateTime();
-    
+
     // Agregar validación en tiempo real para los campos
     setupFieldValidation();
-    
+
     // Manejar el envío del formulario
     if (contactForm) {
         contactForm.addEventListener('submit', handleFormSubmit);
     }
-    
+
     // Cerrar notificaciones
     if (notificationClose) {
         notificationClose.addEventListener('click', () => {
             hideNotification();
         });
     }
-    
+
     // Cerrar modales
     if (modalClose) {
         modalClose.addEventListener('click', closeModal);
     }
-    
+
     if (modalErrorClose) {
         modalErrorClose.addEventListener('click', closeModal);
     }
-    
+
     /**
      * Inicializa los campos de fecha con valores por defecto
      */
@@ -63,37 +63,37 @@ document.addEventListener('DOMContentLoaded', function() {
             // Establecer fecha máxima (hoy) para el campo de fecha de nacimiento
             const today = new Date().toISOString().split('T')[0];
             birthdateInput.setAttribute('max', today);
-            
+
             // Establecer fecha por defecto (18 años atrás)
             const defaultDate = new Date();
             defaultDate.setFullYear(defaultDate.getFullYear() - 18);
             birthdateInput.value = defaultDate.toISOString().split('T')[0];
         }
     }
-    
+
     /**
      * Actualiza la fecha y hora actual en el elemento correspondiente
      */
     function updateDateTime() {
         if (dateTimeDisplay) {
             const now = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit'
             };
-            
+
             dateTimeDisplay.textContent = now.toLocaleDateString('es-ES', options);
-            
+
             // Actualizar cada segundo
             setTimeout(updateDateTime, 1000);
         }
     }
-    
+
     /**
      * Configura la validación en tiempo real para los campos del formulario
      */
@@ -102,23 +102,23 @@ document.addEventListener('DOMContentLoaded', function() {
         for (const fieldId in errorFields) {
             const field = document.getElementById(fieldId);
             const errorId = errorFields[fieldId];
-            
+
             if (field && errorId) {
                 // Validar al perder el foco
-                field.addEventListener('blur', function() {
+                field.addEventListener('blur', function () {
                     validateField(this);
                 });
-                
+
                 // Para checkbox, validar al cambiar
                 if (field.type === 'checkbox') {
-                    field.addEventListener('change', function() {
+                    field.addEventListener('change', function () {
                         validateField(this);
                     });
                 }
-                
+
                 // Para otros campos, limpiar error al empezar a escribir
                 if (field.type !== 'checkbox') {
-                    field.addEventListener('input', function() {
+                    field.addEventListener('input', function () {
                         const errorElement = document.getElementById(errorId);
                         if (errorElement) {
                             errorElement.textContent = '';
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
-    
+
     /**
      * Valida un campo específico del formulario
      * @param {HTMLElement} field - El campo a validar
@@ -141,10 +141,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const errorElement = document.getElementById(errorId);
         let isValid = true;
         let errorMessage = '';
-        
+
         // Si no hay elemento de error, no podemos mostrar mensajes
         if (!errorElement) return true;
-        
+
         // Validar según el tipo de campo
         if (field.hasAttribute('required') && !field.value && field.type !== 'checkbox') {
             isValid = false;
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
             isValid = false;
             errorMessage = 'La descripción debe tener al menos 10 caracteres';
         }
-        
+
         // Mostrar u ocultar mensaje de error
         if (!isValid) {
             field.classList.add('error-input');
@@ -176,17 +176,17 @@ document.addEventListener('DOMContentLoaded', function() {
             errorElement.textContent = '';
             errorElement.classList.remove('show');
         }
-        
+
         return isValid;
     }
-    
+
     /**
      * Valida todos los campos del formulario
      * @returns {boolean} - Verdadero si todos los campos son válidos
      */
     function validateAllFields() {
         let isValid = true;
-        
+
         // Validar cada campo del formulario
         for (const fieldId in errorFields) {
             const field = document.getElementById(fieldId);
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Si alguno no es válido, marcar como inválido el formulario
                 if (!validateField(field)) {
                     isValid = false;
-                    
+
                     // Añadir animación de shake
                     field.classList.add('shake');
                     setTimeout(() => {
@@ -203,23 +203,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
-        
+
         return isValid;
     }
-    
+
     /**
      * Maneja el envío del formulario
      * @param {Event} e - El evento de envío
      */
     function handleFormSubmit(e) {
         e.preventDefault();
-        
+
         // Validar todos los campos
         if (!validateAllFields()) {
             showNotification('Por favor, completa correctamente todos los campos obligatorios', 'error');
             return;
         }
-        
+
         // Recopilar datos del formulario
         const formData = {
             name: document.getElementById('contactName').value,
@@ -231,17 +231,17 @@ document.addEventListener('DOMContentLoaded', function() {
             timestamp: new Date().toISOString(),
             privacy_accepted: document.getElementById('privacyPolicy').checked
         };
-        
+
         // Mostrar modal de carga
         showModal();
         modalLoading.style.display = 'block';
         modalSuccess.style.display = 'none';
         modalError.style.display = 'none';
-        
+
         // Enviar email usando EmailJS
         sendEmail(formData);
     }
-    
+
     /**
      * Muestra u oculta el modal
      * @param {boolean} show - Indica si mostrar u ocultar el modal
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     modal.classList.add('active');
                 }, 10);
-                
+
                 // Agregar clase al body para evitar scroll
                 document.body.classList.add('modal-open');
             } else {
@@ -261,20 +261,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     modal.style.display = 'none';
                 }, 300);
-                
+
                 // Remover clase al body para permitir scroll
                 document.body.classList.remove('modal-open');
             }
         }
     }
-    
+
     /**
      * Cierra el modal
      */
     function closeModal() {
         showModal(false);
     }
-    
+
     /**
      * Muestra una notificación
      * @param {string} message - El mensaje a mostrar
@@ -291,28 +291,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     'info': 'ri-information-line',
                     'warning': 'ri-alert-line'
                 }[type] || 'ri-information-line';
-                
+
                 // Actualizar clase del icono
                 iconElement.className = '';
                 iconElement.classList.add(iconClass);
             }
-            
+
             // Establecer mensaje y tipo
             notificationMessage.textContent = message;
             notificationElement.className = `notification ${type}`;
-            
+
             // Mostrar notificación
             notificationElement.classList.add('active');
-            
+
             // Ocultar después de 5 segundos
             clearTimeout(notificationTimeout);
             notificationTimeout = setTimeout(hideNotification, 5000);
         }
     }
-    
+
     // Variable para almacenar el temporizador de notificación
     let notificationTimeout;
-    
+
     /**
      * Oculta la notificación
      */
@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
             notificationElement.classList.remove('active');
         }
     }
-    
+
     /**
      * Envía un email usando EmailJS
      * @param {Object} formData - Los datos del formulario
@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const serviceID = 'service_zgrkhrf';
         const templateID = 'template_p8v5pdc';
         const userID = 'gIYxgJqJn4Z6ufOad';
-        
+
         // Prepare template parameters
         const templateParams = {
             to_email: 'fabian1234andre@gmail.com',
@@ -344,32 +344,32 @@ document.addEventListener('DOMContentLoaded', function() {
             timestamp: new Date().toLocaleString('es-ES'),
             current_year: new Date().getFullYear()
         };
-        
+
         // Send email
         emailjs.send(serviceID, templateID, templateParams, userID)
-            .then(function(response) {
+            .then(function (response) {
                 console.log('Email enviado correctamente:', response);
-                
+
                 // Mostrar mensaje de éxito
                 modalLoading.style.display = 'none';
                 modalSuccess.style.display = 'block';
-                
+
                 // Limpiar formulario
                 contactForm.reset();
-                
+
                 // Reinicializar campos de fecha
                 initializeDateFields();
-                
+
                 // Mostrar notificación como respaldo
                 showNotification('¡Mensaje enviado con éxito! Pronto me pondré en contacto contigo.', 'success');
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 console.error('Error al enviar email:', error);
-                
+
                 // Mostrar mensaje de error
                 modalLoading.style.display = 'none';
                 modalError.style.display = 'block';
-                
+
                 // Mostrar notificación como respaldo
                 showNotification('Error al enviar el mensaje. Por favor, intenta de nuevo más tarde.', 'error');
             });
@@ -377,30 +377,30 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 /*=============== SMOOTH SCROLL ANIMATION ===============*/
 // Función para scroll suave al hacer clic en enlaces de navegación
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Seleccionar todos los enlaces que apuntan a un ID
     const scrollLinks = document.querySelectorAll('a[href^="#"]');
-    
+
     scrollLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             // Solo para enlaces que no son el botón de scroll-up y que tienen un destino válido
             if (this.getAttribute('href') !== '#' && this.getAttribute('href').length > 1 && !this.classList.contains('empty-link')) {
                 e.preventDefault();
-                
+
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
-                
+
                 if (targetElement) {
                     // Cerrar el menú móvil si está abierto
                     if (navMenu.classList.contains('show-menu')) {
                         navMenu.classList.remove('show-menu');
                     }
-                    
+
                     // Calcular la posición del elemento destino
                     const headerOffset = 100; // Ajustar según la altura del header
                     const elementPosition = targetElement.getBoundingClientRect().top;
                     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    
+
                     // Animar el scroll
                     window.scrollTo({
                         top: offsetPosition,
@@ -487,7 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerToggle = document.getElementById('player-toggle');
     const closePlayer = document.getElementById('close-player');
     const spotifyFrame = document.getElementById('spotify-player');
-    
+
     // Crear un iframe oculto para mantener la reproducción en segundo plano
     const createBackgroundPlayer = () => {
         // Solo crear si no existe ya
@@ -503,7 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
             hiddenPlayer.style.overflow = 'hidden';
             hiddenPlayer.style.zIndex = '-1';
             hiddenPlayer.id = 'background-player-container';
-            
+
             // Clonar el iframe de Spotify
             hiddenPlayer.innerHTML = `
                 <iframe id="background-player" 
@@ -513,17 +513,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share">
                 </iframe>
             `;
-            
+
             document.body.appendChild(hiddenPlayer);
             return document.getElementById('background-player');
         }
         return document.getElementById('background-player');
     };
-    
+
     // Iniciar la música cuando se activa el reproductor
     const startMusic = () => {
         createBackgroundPlayer();
-        
+
         // Intenta reproducir también en el iframe visible 
         if (spotifyFrame) {
             // Enviar mensaje al iframe para reproducir
@@ -536,27 +536,27 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
-    
+
     // Cuando se hace clic en el botón de música
     playerToggle.addEventListener('click', () => {
         musicPlayer.classList.toggle('active');
-        
+
         // Animar el botón cuando se hace clic
         playerToggle.classList.add('clicked');
         setTimeout(() => {
             playerToggle.classList.remove('clicked');
         }, 300);
-        
+
         startMusic();
     });
-    
+
     // Cuando se cierra el reproductor
     closePlayer.addEventListener('click', () => {
         // Solo ocultar el reproductor sin detener la música
         musicPlayer.classList.remove('active');
         // La música sigue reproduciéndose en el iframe oculto
     });
-    
+
     // Mejorar rendimiento del iframe
     if (spotifyFrame) {
         // Remover atributos innecesarios en móviles
@@ -565,7 +565,7 @@ document.addEventListener('DOMContentLoaded', () => {
             spotifyFrame.style.transform = 'translateZ(0)'; // Forzar aceleración hardware
         }
     }
-    
+
     // Iniciar reproductor en segundo plano después de interacción del usuario
     document.addEventListener('click', startMusic, { once: true });
 });
@@ -574,11 +574,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // Función para intentar reproducir música
 function tryPlayMusic() {
     const spotifyFrame = document.querySelector('.music-player__content iframe');
-    
+
     if (spotifyFrame) {
         // Actualizar la URL del iframe para forzar recarga con autoplay
         let currentSrc = spotifyFrame.src;
-        
+
         // Asegurarse de que tiene el parámetro autoplay=1
         if (!currentSrc.includes('autoplay=1')) {
             if (currentSrc.includes('?')) {
@@ -591,7 +591,7 @@ function tryPlayMusic() {
             // Recargar el iframe para forzar autoplay
             spotifyFrame.src = spotifyFrame.src;
         }
-        
+
         // Enfocar el iframe para aumentar posibilidades de autoplay
         setTimeout(() => {
             spotifyFrame.focus();
@@ -603,16 +603,16 @@ function tryPlayMusic() {
 function aggressivePlayAttempt() {
     // Hacer visible el reproductor
     musicPlayer.classList.add('active');
-    
+
     // Intento múltiple de reproducción
     tryPlayMusic();
-    
+
     // Segundo intento después de 1 segundo
     setTimeout(tryPlayMusic, 1000);
-    
+
     // Tercer intento después de 2 segundos
     setTimeout(tryPlayMusic, 2000);
-    
+
     // Mostrar instrucción visual
     const notification = document.createElement('div');
     notification.style.position = 'fixed';
@@ -626,9 +626,9 @@ function aggressivePlayAttempt() {
     notification.style.fontWeight = 'bold';
     notification.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
     notification.innerHTML = 'Haz clic en cualquier parte para activar la música 🎵';
-    
+
     document.body.appendChild(notification);
-    
+
     // Eliminar la notificación después de 8 segundos
     setTimeout(() => {
         notification.style.opacity = '0';
@@ -645,7 +645,7 @@ function setupUserActivatedPlay() {
         document.removeEventListener('click', activateMusic);
         document.removeEventListener('keydown', activateMusic);
     };
-    
+
     document.addEventListener('click', activateMusic);
     document.addEventListener('keydown', activateMusic);
 }
@@ -675,10 +675,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Iniciar reproducción agresiva de música
                 aggressivePlayAttempt();
-                
+
                 // Configurar activación por usuario como respaldo
                 setupUserActivatedPlay();
-                
+
             }, 400);
         }, 2000);
     }, 3000);
@@ -688,7 +688,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function setupEmptyLinksHandler() {
     // Seleccionar todos los enlaces que tienen la clase empty-link o href="#" o href=""
     const emptyLinks = document.querySelectorAll('.empty-link, a[href="#"]:not(.nav__link):not(#scroll-up), a[href=""]:not(.nav__link)');
-    
+
     // Añadir evento de clic para redirigir a la página 404
     emptyLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -696,17 +696,17 @@ function setupEmptyLinksHandler() {
             window.location.href = '404.html';
         });
     });
-    
-    // Manejar específicamente el botón de proyecto
+
+    // MODIFICAR ESTA PARTE - Comprobar si el botón de proyecto tiene un href válido
     const projectButton = document.querySelector('.project-button');
-    if (projectButton) {
+    if (projectButton && (projectButton.getAttribute('href') === '#' || projectButton.getAttribute('href') === '' || !projectButton.hasAttribute('href'))) {
         projectButton.addEventListener('click', (e) => {
             e.preventDefault();
             window.location.href = '404.html';
         });
     }
-    
-    // Añadir manejador para todos los enlaces en el pie de página
+
+    // El resto del código queda igual
     const footerLinks = document.querySelectorAll('.footer__link:not([href^="http"]):not([href^="index"])');
     footerLinks.forEach(link => {
         if (link.getAttribute('href') === '#' || link.getAttribute('href') === '' || !link.hasAttribute('href')) {
@@ -716,8 +716,7 @@ function setupEmptyLinksHandler() {
             });
         }
     });
-    
-    // Manejar formulario
+
     const contactForm = document.querySelector('.join__form');
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
@@ -725,14 +724,6 @@ function setupEmptyLinksHandler() {
         });
     }
 }
-
-// Intento adicional de reproducción cuando la ventana obtiene foco
-window.addEventListener('focus', () => {
-    if (musicPlayer.classList.contains('active')) {
-        tryPlayMusic();
-    }
-});
-
 /*=============== SCROLL REVEAL ANIMATION ===============*/
 const sr = ScrollReveal({
     origin: 'top',

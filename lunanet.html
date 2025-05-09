@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luna NET - Bot de Discord</title>
+    <link rel="shortcut icon" href="assets/img/2.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/estilos.css">
+</head>
+
+<body data-theme="light">
+    <!-- Sistema de Carga -->
+    <div class="preloader">
+        <div class="preloader-content">
+            <div class="moon-loader">
+                <div class="moon"></div>
+                <div class="crater crater-1"></div>
+                <div class="crater crater-2"></div>
+                <div class="crater crater-3"></div>
+            </div>
+            <h2 class="preloader-title">Luna NET</h2>
+            <p class="preloader-subtitle">Cargando experiencia...</p>
+            <div class="preloader-progress">
+                <div class="preloader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sistema de Notificación de Errores (inicialmente oculto) -->
+    <div class="error-notification" id="error-notification">
+        <div class="error-icon">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="error-content">
+            <h3 class="error-title">¡Ups! Algo salió mal</h3>
+            <p class="error-message" id="error-message">Ha ocurrido un error inesperado.</p>
+        </div>
+        <button class="error-close" id="error-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">
+                <img src="2.png" alt="Luna NET Logo">
+                <div>
+                    <span class="logo-text">Luna NET</span>
+                    <span class="studios">by Moon Studios</span>
+                </div>
+            </a>
+
+            <button class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#caracteristicas">Características</a></li>
+                <li><a href="#comandos">Comandos</a></li>
+                <li><a href="#testimonios">Testimonios</a></li>
+                <li><a href="index.html">AndreSM</a></li>
+                <li>
+                    <button class="theme-toggle" id="theme-toggle" title="Cambiar tema">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <!-- Fondo animado de espacio -->
+        <div class="space-background">
+            <div class="stars"></div>
+            <div class="twinkling"></div>
+            <div class="clouds"></div>
+            <div class="shooting-stars" id="shooting-stars"></div>
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">Luna NET</h1>
+            <p class="hero-subtitle">El bot multifuncional perfecto para tu servidor de Discord</p>
+            <p class="hero-subtitle testimonial-content">En desarrollo, lanzamiento 2025</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">Añadir a Discord</a>
+                <a href="#" class="btn btn-secondary">Ver Documentación</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="caracteristicas">
+        <div class="container">
+            <h2 class="section-title">Características</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3 class="feature-title">Música</h3>
+                    <p class="feature-description">Reproduce música de alta calidad desde YouTube, Spotify y otras
+                        plataformas con una cola de reproducción avanzada.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Moderación</h3>
+                    <p class="feature-description">Mantén tu servidor seguro con herramientas de moderación potentes y
+                        fáciles de usar.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="feature-title">Automatización</h3>
+                    <p class="feature-description">Configura respuestas automáticas, mensajes de bienvenida y roles
+                        automáticos para tu servidor.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="feature-title">Juegos</h3>
+                    <p class="feature-description">Diviértete con una variedad de mini-juegos dentro de Discord para
+                        entretener a tu comunidad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Section -->
+    <section class="commands" id="comandos">
+        <div class="container">
+            <h2 class="commands-title">Comandos</h2>
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="general">General</button>
+                    <button class="tab-button" data-tab="moderacion">Moderación</button>
+                    <button class="tab-button" data-tab="diversion">Diversión</button>
+                </div>
+
+                <div class="tab-content active" id="general-tab">
+                    <div class="command-card">
+                        <h4 class="command-name">/help</h4>
+                        <p class="command-description">Muestra una lista de todos los comandos disponibles.</p>
+                        <div class="command-usage">/help [comando]</div>
+                    </div>
+                    <div class="command-card">
+                        <h4 class="command-name">/info</h4>
+                        <p class="command-description">Muestra información sobre el bot y sus estadísticas.</p>
+                        <div class="command-usage">/info</div>
+                    </div>
+                    <div class="command-card">
+                        <h4 class="command-name">/ping</h4>
+                        <p class="command-description">Comprueba la latencia del bot.</p>
+                        <div class="command-usage">/ping</div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="moderacion-tab">
+                    <div class="command-card">
+                        <h4 class="command-name">/ban</h4>
+                        <p class="command-description">Banea a un usuario del servidor.</p>
+                        <div class="command-usage">/ban @usuario [razón]</div>
+                    </div>
+                    <div class="command-card">
+                        <h4 class="command-name">/kick</h4>
+                        <p class="command-description">Expulsa a un usuario del servidor.</p>
+                        <div class="command-usage">/kick @usuario [razón]</div>
+                    </div>
+                    <div class="command-card">
+                        <h4 class="command-name">/clear</h4>
+                        <p class="command-description">Elimina mensajes del canal actual.</p>
+                        <div class="command-usage">/clear [cantidad]</div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="diversion-tab">
+                    <div class="command-card">
+                        <h4 class="command-name">/trivia</h4>
+                        <p class="command-description">Inicia un juego de trivia.</p>
+                        <div class="command-usage">/trivia [categoría]</div>
+                    </div>
+                    <div class="command-card">
+                        <h4 class="command-name">/8ball</h4>
+                        <p class="command-description">Responde a tu pregunta con una respuesta aleatoria.</p>
+                        <div class="command-usage">/8ball [pregunta]</div>
+                    </div>
+                    <div class="command-card">
+                        <h4 class="command-name">/meme</h4>
+                        <p class="command-description">Envía un meme aleatorio.</p>
+                        <div class="command-usage">/meme</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonios">
+        <div class="container">
+            <h2 class="testimonials-title">Testimonios</h2>
+            <div class="testimonials-container">
+                <div class="testimonial-slider">
+                    <div class="testimonial-slides">
+                        <div class="testimonial-slide">
+                            <p class="testimonial-content">"Luna NET es el mejor bot que hemos tenido en nuestro
+                                servidor. La calidad de música es excelente y las herramientas de moderación son muy
+                                útiles."</p>
+                            <h4 class="testimonial-author">Carlos Mendoza</h4>
+                            <p class="testimonial-position">Administrador de Servidor Gaming</p>
+                        </div>
+                        <div class="testimonial-slide">
+                            <p class="testimonial-content">"Increíble bot, tiene todo lo que necesitamos y más. El
+                                soporte técnico es excelente y siempre están añadiendo nuevas funciones."</p>
+                            <h4 class="testimonial-author">Luisa Fernández</h4>
+                            <p class="testimonial-position">Moderadora de Comunidad</p>
+                        </div>
+                        <div class="testimonial-slide">
+                            <p class="testimonial-content">"Los mini-juegos son super divertidos y mantienen activa
+                                nuestra comunidad. ¡Definitivamente recomiendo Luna NET!"</p>
+                            <h4 class="testimonial-author">Alejandro Pérez</h4>
+                            <p class="testimonial-position">Fundador de Servidor</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-dots">
+                    <div class="testimonial-dot active" data-slide="0"></div>
+                    <div class="testimonial-dot" data-slide="1"></div>
+                    <div class="testimonial-dot" data-slide="2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <div class="logo">
+                    <img src="2.png" alt="Luna NET Logo">
+                    <div>
+                        <span class="logo-text">Luna NET</span>
+                    </div>
+                </div>
+                <p class="footer-description">Un bot multifuncional para Discord creado para mejorar la experiencia de
+                    tu servidor.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h3 class="footer-title">Enlaces</h3>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="#inicio">Inicio</a></li>
+                    <li class="footer-link"><a href="#caracteristicas">Características</a></li>
+                    <li class="footer-link"><a href="#comandos">Comandos</a></li>
+                    <li class="footer-link"><a href="#testimonios">Testimonios</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3 class="footer-title">Recursos</h3>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="assets/html/politica.html">Politica</a></li>
+                    <li class="footer-link"><a href="assets/html/sobre.html">Sobre Nosotros</a></li>
+                    <li class="footer-link"><a href="assets/html/faq.html">FAQ</a></li>
+                    <li class="footer-link"><a href="assets/html/terminos.html">Términos de Servicio</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3 class="footer-title">Contacto</h3>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="#">Soporte</a></li>
+                    <li class="footer-link"><a href="#">Reportar Errores</a></li>
+                    <li class="footer-link"><a href="#">Sugerir Funciones</a></li>
+                    <li class="footer-link"><a href="#">Servidor de Discord</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Luna NET. Todos los derechos reservados.</p>
+            <div class="footer-creator">
+                <span>Creado por</span>
+                <img src="1.png" alt="Moon Studios Logo">
+                <span>Moon Studios</span>
+            </div>
+        </div>
+    </footer>
+    <script src="assets/js/lunanet.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,236 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all 0.3s;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  background: #0a0a0a; 
+  margin: 0;
+  padding: 0;
+}
+
+/* Barra de navegación */
+.navbar {
+    background-color: #2c2c2c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-bottom: 3px solid #444;
+    flex-wrap: wrap; /* Permite que el contenido se envuelva en pantallas pequeñas */
+}
+
+.navbar-link {
+    color: #0099ff; /* Azul brillante */
+    text-decoration: none;
+    font-size: 16px;
+    margin: 0 10px;
+}
+
+.navbar-link:hover {
+    text-decoration: underline;
+}
+
+.navbar h1 {
+    color: #f5f5f5;
+    font-size: 24px;
+    margin: 0;
+}
+
+.header-avatar {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 3px solid #555;
+}
+
+/* Estilos para el cuerpo del documento */
+body {
+    font-family: Arial, sans-serif;
+    color: #e0e0e0; /* Texto gris claro */
+    background-color: #1c1c1c; /* Fondo negro oscuro */
+    line-height: 1.6;
+}
+
+/* Estilos para el encabezado */
+header {
+    background-color: #2c2c2c; /* Gris más oscuro */
+    padding: 20px;
+    text-align: center;
+    border-bottom: 3px solid #444; /* Gris medio */
+    position: relative;
+}
+
+header h1 {
+    color: #f5f5f5; /* Blanco */
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+header .header-avatar {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 3px solid #555; /* Gris medio */
+}
+
+/* Estilos para el contenido principal */
+main {
+    padding: 20px;
+}
+
+/* Estilos para las secciones */
+section {
+    margin-bottom: 20px;
+    background-color: #2e2e2e; /* Gris más claro */
+    border-radius: 8px;
+    padding: 15px;
+}
+
+section h2 {
+    color: #f5f5f5; /* Blanco */
+    font-size: 22px;
+    border-bottom: 2px solid #444; /* Gris medio */
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+section p, section ul {
+    color: #d0d0d0; /* Gris claro */
+}
+
+section ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+section ul li {
+    margin-bottom: 8px;
+}
+
+section a {
+    color: #0099ff; /* Azul brillante */
+    text-decoration: none;
+}
+
+section a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    padding: 20px;
+    background: #222; /* Fondo del pie de página en negro */
+    color: #ddd; /* Texto en gris claro */
+    border-top: 2px solid #444; /* Borde superior en gris claro */
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.footer-info p {
+    margin: 5px 0;
+}
+
+.footer-info a {
+    color: #ccc; /* Enlaces en gris claro */
+    text-decoration: none;
+}
+
+.footer-info a:hover {
+    color: #fff; /* Enlaces en blanco al pasar el cursor */
+    text-decoration: underline;
+}
+
+.footer-links, .footer-social {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.footer-links a, .footer-social a {
+    color: #ccc; /* Enlaces en gris claro */
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer-links a:hover, .footer-social a:hover {
+    color: #fff; /* Enlaces en blanco al pasar el cursor */
+    text-decoration: underline;
+}
+
+.footer-disclaimer {
+    font-size: 0.9em;
+    color: #888; /* Texto del descargo en gris más claro */
+}
+
+
+/* Scrollbar para el contenedor principal */
+.container::-webkit-scrollbar {
+    width: 12px; /* Ancho del scrollbar */
+  }
+  
+  .container::-webkit-scrollbar-track {
+    background: #2c2c2c; /* Fondo de la pista del scrollbar */
+    border-radius: 10px;
+  }
+  
+  .container::-webkit-scrollbar-thumb {
+    background: #444; /* Color del thumb */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para darle un efecto de profundidad */
+  }
+  
+  .container::-webkit-scrollbar-thumb:hover {
+    background: #666; /* Color del thumb al pasar el ratón */
+  }
+  
+  /* Scrollbar para el body o el contenedor general */
+  body::-webkit-scrollbar {
+    width: 12px; /* Ancho del scrollbar */
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: #2c2c2c; /* Fondo de la pista del scrollbar */
+    border-radius: 10px;
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background: #444; /* Color del thumb */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para darle un efecto de profundidad */
+  }
+  
+  body::-webkit-scrollbar-thumb:hover {
+    background: #666; /* Color del thumb al pasar el ratón */
+  }
+
+  /* Diseño responsivo para pantallas pequeñas */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar h1 {
+        font-size: 20px;
+    }
+
+    .navbar-link {
+        margin: 10px 0;
+    }
+}
